@@ -1,5 +1,9 @@
 <?php 
-    $handle = fopen('ativosdatacsv196132.txt', 'r');
+
+    // Caminho para o arquivo
+    $filename = 'ativosdatacsv196132.txt';
+
+    $handle = fopen($filename, 'r');
 
     $ativos = [];
     $siglas = [];
@@ -35,6 +39,7 @@
         'ativos' => []
     ];
 
+
     // verificando sigla
     if(!is_null($sigla)) {
         $indices = [];
@@ -50,10 +55,28 @@
     }
 
 
+    if(!is_null($classe_filtro)) {
+        $res = $filtered['ativos'];
+        $filtered['ativos'] = [];
 
+        foreach($res as $_ativo){
+            if(in_array($_ativo['classe'], $classe_filtro)) {
+                $filtered['ativos'][] = $_ativo;
+            }
+        }
+    }
 
+    if(!is_null($setor_filtro)) {
+        $res = $filtered['ativos'];
+        $filtered['ativos'] = [];
 
-    
+        foreach($res as $_ativo){
+            if(in_array($_ativo['setor'], $setor_filtro)) {
+                $filtered['ativos'][] = $_ativo;
+            }
+        }
+    }
+
 
     $final = ['result' => []];
 
@@ -69,7 +92,6 @@
     }else {
         $final['result'] = $filtered['ativos'];
     }
-
 
     echo json_encode($final);
 
