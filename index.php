@@ -72,6 +72,16 @@
             $res = $ativos;
             $filtrado = [];
 
+            // ajustando formatação do CNPJ
+            if($filtro == 'cnpj') {
+                $aux = array_map(function($elem) {
+                    $cnpj = preg_replace('/\D/i', '', $elem);
+                    $cnpj = preg_replace('/^(\d{2})(\d{3})(\d{3})(\d{4})/', '$1.$2.$3/$4-', $cnpj);
+                    return $cnpj;
+                }, $valor_filtro);
+                $valor_filtro = $aux;
+            }
+
             foreach ($res as $_ativo) {
                 if(!isset($_ativo[$filtro])) continue;
                 if(in_array($_ativo[$filtro], $valor_filtro)) {
@@ -82,7 +92,6 @@
             $ativos = $filtrado;
         }
     }
-
     // atributos
     $atributo = (isset($_GET['atributo']) && !empty($_GET['atributo'])) ? explode(',', $_GET['atributo']) : null;
 
