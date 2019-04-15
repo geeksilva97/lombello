@@ -9,6 +9,7 @@
     $siglas = [];
     $header = [];
     $filtros = [];
+    $filtros_range = [];
     $response = [
         'result' => []
     ];
@@ -32,7 +33,37 @@
     }
 
     $filtros = array_intersect($header, array_keys($_GET));
+    
+    foreach ($_GET as $key => $value) {
+        if(preg_match('/(\w+)_[maior|menor]/', $key)) {
+            $filtros_range[] = $key;
+        }
+    }
 
+    foreach($filtros_range as $filtro) {
+        $valor_filtro = (!empty($_GET[$filtro])) ? $_GET[$filtro] : null;
+        if(!is_null($valor_filtro) && is_numeric($valor_filtro)) {
+            $res = $ativos;
+            $filtrado = [];
+
+            // quebrando string
+            $aux = explode('_', $filtro);
+            foreach($res as $_ativo) {
+                if($aux[1] == 'menor') {
+                    if($_ativo[$aux[0]] < $valor_filtro) {
+                        $filtrado[] = $_ativo;
+                    }
+                }else if($aux[1] == 'maior') {
+                    if($_ativo[$aux[0]] > $valor_filtro) {
+                        $filtrado[] = $_ativo;
+                    }
+                }
+            }
+
+            $ativos = $filtrado;
+        }
+    }
+    
     // aplicando filtros nos ativos
     foreach ($filtros as $filtro) {
         $valor_filtro = (!empty($_GET[$filtro])) ? explode(',', $_GET[$filtro]) : null;
@@ -42,6 +73,7 @@
             $filtrado = [];
 
             foreach ($res as $_ativo) {
+                if(!isset($_ativo[$filtro])) continue;
                 if(in_array($_ativo[$filtro], $valor_filtro)) {
                     $filtrado[] = $_ativo;
                 }
