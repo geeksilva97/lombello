@@ -72,6 +72,13 @@
             $res = $ativos;
             $filtrado = [];
 
+            // Aplicando case insensitive
+            $aux = array_map(function($elemento) {
+                return strtoupper($elemento);
+            }, $valor_filtro);
+
+            $valor_filtro = $aux;
+
             // ajustando formatação do CNPJ
             if($filtro == 'cnpj') {
                 $aux = array_map(function($elem) {
