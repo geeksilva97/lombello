@@ -1,8 +1,9 @@
 <?php 
+    include 'keys.php';
+    global $keys;
 
     // Caminho para o arquivo
     $filename = 'ativosdatacsv196132.txt';
-
     $handle = fopen($filename, 'r');
 
     $ativos = [];
@@ -13,6 +14,11 @@
     $response = [
         'result' => []
     ];
+
+    $key = $_GET['key'] ?? '';
+    if(empty($key) || !in_array($key, $keys)) {
+        die();
+    }
 
     $row = 1;
     while($data = fgetcsv($handle)){
