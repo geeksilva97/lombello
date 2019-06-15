@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json');
+ini_set("auto_detect_line_endings", true);
 	$handle = opendir('historico');
 	$stocks = [];
 	$available_filters = ['sigla']; // filtros disponíveis
@@ -117,18 +118,18 @@ header('Content-Type: application/json');
     $found= [];
 
     // aplicando formato de data
-    $formatted_local = array_map(function($f){
-    	$date = $f[1];
-    	$year = substr($date, 0, 4);
-    	$month = substr($date, 4, 2);
-    	$day = substr($date, 6, 2);
-    	$f[1] = $day.'/'.$month.'/'.$year;
-    	return $f;
-    }, $local);
+    // $formatted_local = array_map(function($f){
+    // 	$date = $f[1];
+    // 	$year = substr($date, 0, 4);
+    // 	$month = substr($date, 4, 2);
+    // 	$day = substr($date, 6, 2);
+    // 	$f[1] = $day.'/'.$month.'/'.$year;
+    // 	return $f;
+    // }, $local);
 
     foreach ($matched as $key => $sigla) {
     	$found[$sigla] = [];
-    	foreach ($formatted_local as $_key => $history_line) {
+    	foreach ($local as $_key => $history_line) {
     		if($history_line[0] == $sigla) {
     			$found[$sigla][] = $history_line;
     		}
