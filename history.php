@@ -1,5 +1,5 @@
 <?php
-
+header('Content-Type: application/json');
 	$handle = opendir('historico');
 	$stocks = [];
 	$available_filters = ['sigla']; // filtros disponíveis
@@ -141,7 +141,7 @@
     $result['found'] = $found;
 
 
-    echo '<pre>';
+    
     echo json_encode($result);
 
     
