@@ -37,6 +37,12 @@ ini_set("auto_detect_line_endings", true);
     	$filter_value = (!empty($_GET[$_filter])) ? explode(',', $_GET[$_filter]) : null;
 
     	if(!is_null($filter_value)) {
+
+    		// aplicando case insensitive
+    		$filter_value = array_map(function($elem) {
+                return strtoupper($elem);
+            }, $filter_value);
+
     		$matched = array_intersect($filter_value, $stocks);
     		$unmatched = array_diff($filter_value, $stocks);
     		
